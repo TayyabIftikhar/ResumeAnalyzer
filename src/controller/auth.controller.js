@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import tokenBlacklistModel from "../models/blacklist.model.js";
 
 
 async function registerUserController(req, res) {
@@ -45,4 +46,64 @@ async function registerUserController(req, res) {
     })
 }
 
-export default registerUserController;
+
+async function loginUserController(req, res) {
+    const { email, password } = req.body;
+
+    const user = await userModel.findOne({ email});
+     if(!user){
+        return res.status(400).json({ message: "Invalid email or password" });
+     }
+
+     const isPasswordValid = await bcrypt.compare(password, user.password);
+     if(!isPasswordValid) {
+        return res.status(400).json({ message: "Invalid email or password" });
+     }
+
+     const token = jwt.sign(
+        {id:user._id,username:user.username},
+        process.env.JWT_SECRET,
+        {expiresIn:"1d"}
+    )
+    res.cookie("token", token)
+
+    res.status(200).json({
+        message: "User logged in successfully",
+        user: {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+        }
+    })
+}
+
+// has to implement token blacklisting for logout withn redis and something throughput
+async function logoutUserController(req, res) {
+    const { token } = req.cookies.token;
+
+    if(token) {
+        await tokenBlacklistModel.create({ token });
+    }
+        res.clearCookie("token");
+        return res.status(200).json({ message: "User logged out successfully" }); 
+}
+
+//
+async function getMeController(req, res) {
+    const user = await userModel.findById(req.user.id);
+
+    res.status(200).json({
+        message: "User fetched successfully",
+        user: {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+        }
+    })
+
+}
+
+export {registerUserController, 
+        loginUserController, 
+        logoutUserController,
+    getMeController};
