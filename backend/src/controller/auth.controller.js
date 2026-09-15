@@ -79,7 +79,7 @@ async function loginUserController(req, res) {
 
 // has to implement token blacklisting for logout withn redis and something throughput
 async function logoutUserController(req, res) {
-    const { token } = req.cookies.token;
+    const  token  = req.cookies.token;
 
     if(token) {
         await tokenBlacklistModel.create({ token });

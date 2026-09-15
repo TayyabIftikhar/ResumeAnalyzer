@@ -11,23 +11,31 @@ const Login = () => {
     const {loading, handleLogin} = useAuth();
     const navigate = useNavigate();
 
+    const [errorMessage, setErrorMessage] = useState("");
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
 
     const handleSubmit = async (e) =>{
     e.preventDefault()
-    await handleLogin({email, password});
-    navigate("/");
+    try {
+        await handleLogin({email, password});
+        navigate("/");
+    } catch (error) {
+        setErrorMessage(
+            error.response?.data?.message || "Login failed"
+        );
     }
 
     if(loading) {
         return (<main><h1>Loading...</h1></main>)
     }
+    };
 
   return (
     <main>
         <div className="form-container">
             <h1>Login</h1>
+            {errorMessage && <p className="error">{errorMessage}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="input-group">
                     <label htmlFor="email">Email</label>
