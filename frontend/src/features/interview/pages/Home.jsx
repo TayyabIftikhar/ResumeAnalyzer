@@ -3,6 +3,7 @@ import { useInterview } from "../hooks/useinterview.js";
 import {useState,useRef} from "react"
 import {useNavigate} from "react-router"
 import {useAuth} from "../../auth/hooks/useAuth.js"
+import "../style/home.scss"
 
 
 const Home = () => {
@@ -12,6 +13,7 @@ const Home = () => {
 
     const [jobDescription, setJobDescription] = useState("");
     const [selfDescription, setSelfDescription] = useState("");
+    const [isGenerating, setIsGenerating] = useState(false);
     const resumeInputRef = useRef(null);
 
     const navigate = useNavigate();
@@ -31,26 +33,45 @@ const Home = () => {
     const handleGenerateReport = async (e) => {
         e.preventDefault();
         const resumeFile = resumeInputRef.current.files[0];
-        const data =await generateReport({ jobDescription, selfDescription, resumeFile });  
-        navigate(`/interview/${data._id}`);
+        setIsGenerating(true);
+        try {
+            const data = await generateReport({ jobDescription, selfDescription, resumeFile });
+            navigate(`/interview/${data._id}`);
+        } finally {
+            setIsGenerating(false);
+        }
     };
 
     if (loading) {
-        return <main><div>Loading your interview plan ... </div></main>;
+        return (
+            <main className="home-loading">
+                <div>
+                    <span className="loading-spinner" />
+                    <p>{isGenerating ? "Loading your interview plan..." : "Loading your reports..."}</p>
+                </div>
+            </main>
+        );
     }
 
     return ( 
         <main className = 'home'>
-            <button onClick={handleLogoutClick}>
+            <button className="logout-button" onClick={handleLogoutClick}>
                 Logout
             </button>   
-            <div className = 'left'>
+            <header className="home-intro">
+                <p className="home-kicker">Your interview preparation desk</p>
+                <h1 className="home-title">Turn your experience into confident answers.</h1>
+                <p className="home-subtitle">Add a target role, your resume, and a little context. We will shape it into a focused interview plan you can actually use.</p>
+            </header>
+            <div className = 'left report-prompt'>
+                <h2>Start with the role</h2>
                 <label htmlFor="jobDescription">Job Description</label>
                 <textarea onChange={(e) => setJobDescription(e.target.value)} 
                           name="jobDescription" id="jobDescription"  placeholder="Enter Job Description"></textarea>
             </div>
 
-            <div className = 'right'>
+            <div className = 'right report-details'>
+                <h2>Bring your perspective</h2>
                 <div className = 'input-group'>
                     <p>Resume (Use Resume and Self description for best results)</p>
                     <label htmlFor="resume">Upload Resume</label>
@@ -67,9 +88,13 @@ const Home = () => {
             </div>
 
             {/* Recent Reports */}
-            {reports.length > 0 && (
-                <div className="recent-reports">
+            
+                <div>
                     <h2>My Recent Reports</h2>
+                    <p className="reports-caption">Your previous preparation plans, ready to revisit.</p>
+                    {reports.length === 0 ? (
+                        <p>You don't have any interview reports yet.</p>
+                    ) : (
                     <ul>
                         {reports.map((report) => (
                             <li key={report._id} onClick={() => navigate(`/interview/${report._id}`)}>
@@ -79,8 +104,9 @@ const Home = () => {
                             </li>
                         ))}
                     </ul>
+                    )}
                 </div>
-            )}
+            
 
         </main> 
     )

@@ -14,9 +14,11 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e) =>{
     e.preventDefault()
+    setIsSubmitting(true);
     try {
         await handleLogin({email, password});
         navigate("/");
@@ -24,15 +26,25 @@ const Login = () => {
         setErrorMessage(
             error.response?.data?.message || "Login failed"
         );
+    } finally {
+        setIsSubmitting(false);
     }
 
-    if(loading) {
-        return (<main><h1>Loading...</h1></main>)
-    }
     };
 
+    if (loading) {
+        return (
+            <main className="auth-loading">
+                <div>
+                    <span className="loading-spinner" />
+                    <h1>{isSubmitting ? "Signing you in..." : "Checking your session..."}</h1>
+                </div>
+            </main>
+        )
+    }
+
   return (
-    <main>
+    <main className="auth-page">
         <div className="form-container">
             <h1>Login</h1>
             {errorMessage && <p className="error">{errorMessage}</p>}

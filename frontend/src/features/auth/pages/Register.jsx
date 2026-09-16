@@ -2,6 +2,7 @@ import React from 'react'
 import {useState} from "react";
 import {useAuth} from "../hooks/useAuth.js";
 import {useNavigate, Link} from "react-router";
+import '../auth.form.scss'
 
 
 
@@ -13,12 +14,14 @@ const Register = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [errorMessage, setErrorMessage] = useState("")
    
 
     const handleSubmit = async (e) =>{
     e.preventDefault()
+    setIsSubmitting(true);
     try {
     await handleRegister({username, email, password});
     navigate("/");
@@ -27,19 +30,25 @@ const Register = () => {
          setErrorMessage(
             error.response?.data?.message || "Registration failed"
         );
+    } finally {
+        setIsSubmitting(false);
     }
 }
 
-    if(loading) {
-        return (<main><h1>Loading...</h1></main>)
+    if (loading) {
+        return (
+            <main className="auth-loading">
+                <div>
+                    <span className="loading-spinner" />
+                    <h1>{isSubmitting ? "Creating your workspace..." : "Checking your session..."}</h1>
+                </div>
+            </main>
+        )
     }
 
 
-
-
-
   return (
-        <main>
+        <main className="auth-page">
         <div className="form-container">
             <h1>Register</h1>
                 {errorMessage && (

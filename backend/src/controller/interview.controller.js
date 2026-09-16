@@ -5,7 +5,8 @@ import interviewReportModel from "../models/interviewReport.model.js";
 
 async function generateInterViewReportController(req, res) {
 
-    const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText(); 
+    // const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText(); 
+    const resumeContent = await pdfParse(req.file.buffer);
     const{selfDescription,jobDescription} = req.body;
 
     const interviewReportByAi = await generateInterviewReport({
@@ -13,6 +14,8 @@ async function generateInterViewReportController(req, res) {
         selfDescription,
         jobDescription,
     })
+
+    console.log("AI report:", interviewReportByAi);
 
     const interviewReport = await interviewReportModel.create({
         user: req.user.id,
@@ -32,7 +35,7 @@ async function generateInterViewReportController(req, res) {
 
 async function getInterviewReportByIdController(req, res) {
     const {interviewId} = req.params;
-    const interviewReport = await interviewReportModel.findOne({_id: interviewId},{user: req.user.id});
+    const interviewReport = await interviewReportModel.findOne({_id: interviewId,user: req.user.id});
 
     if(!interviewReport){
         return res.status(404).json({

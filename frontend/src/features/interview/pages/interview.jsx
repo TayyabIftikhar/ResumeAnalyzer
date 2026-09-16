@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useInterview } from '../hooks/useinterview.js'
 import { useParams } from 'react-router'
+import '../style/interview.scss'
 
 const NAV_ITEMS = [
     {id: 'technical', label: 'Technical Questions',},
@@ -13,19 +14,19 @@ const QuestionCard = ({ item, index }) => {
     const [open, setOpen] = useState(false)
 
     return (
-        <div>
-            <div onClick={() => setOpen(o => !o)}>
-                <span>Q{index + 1}</span>
+        <div className="question-card">
+            <div className="question-row" onClick={() => setOpen(o => !o)}>
+                <span className="question-number">Q{index + 1}</span>
 
-                <p>{item.question}</p>
+                <p className="question-text">{item.question}</p>
 
-                <span>
+                <span className="question-chevron">
                     {open ? '▲' : '▼'}
                 </span>
             </div>
 
             {open && (
-                <div>
+                <div className="question-details">
                     <div>
                         <span>Intention</span>
                         <p>{item.intention}</p>
@@ -43,8 +44,8 @@ const QuestionCard = ({ item, index }) => {
 
 // Roadmap component
 const RoadMapDay = ({ day }) => (
-    <div>
-        <div>
+    <div className="roadmap-day">
+        <div className="roadmap-heading">
             <span>Day {day.day}</span>
             <h3>{day.focus}</h3>
         </div>
@@ -61,6 +62,9 @@ const RoadMapDay = ({ day }) => (
 
 // Main component
 const Interview = () => {
+
+    const [downloadError, setDownloadError] = useState("");
+    
     const [activeNav, setActiveNav] = useState('technical')
     const {report, getReportById,loading,getResumePdf} = useInterview()
     const { interviewId } = useParams()
@@ -73,21 +77,24 @@ const Interview = () => {
 
     if (loading || !report) {
         return (
-            <main>
-                <h1>Loading your interview plan...</h1>
+            <main className="interview-loading">
+                <div>
+                    <span className="loading-spinner" />
+                    <h1>Loading your interview plan...</h1>
+                </div>
             </main>
         )
     }
 
     return (
-        <div>
+        <div className="interview-page">
 
             {/* Left Navigation */}
             <nav>
                 <p>Sections</p>
 
                 {NAV_ITEMS.map(item => (
-                    <button
+                    <button className={activeNav === item.id ? 'active' : ''}
                         key={item.id}
                         onClick={() => setActiveNav(item.id)}
                     >
@@ -96,13 +103,30 @@ const Interview = () => {
                 ))}
 
                 <button
-                    onClick={() => {
-                        getResumePdf(interviewId)
+                    className="download-button"
+                    onClick={async () => {
+                        setDownloadError("");
+
+                        try {
+                            await getResumePdf(interviewId);
+                        } catch (error) {
+                            setDownloadError(
+                                error.response?.data?.message ||
+                                "Unable to download the resume. Please try again."
+                            );
+                        }
                     }}
                 >
                     Download Resume
                 </button>
+
             </nav>
+
+            {downloadError && (
+                <p className="download-error">
+                    {downloadError}
+                </p>
+            )}
 
             {/* Main Content */}
             <main>

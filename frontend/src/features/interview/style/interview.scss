@@ -1,0 +1,405 @@
+.interview-page {
+	min-height: 100vh;
+	display: grid;
+	grid-template-columns: 220px minmax(0, 1fr) 260px;
+	gap: 24px;
+	padding: 28px clamp(18px, 4vw, 58px) 58px;
+	color: #17211b;
+	background: #f5f0e8;
+}
+
+.interview-page > nav,
+.interview-page > aside {
+	align-self: start;
+	border: 1px solid #ded6c9;
+	background: #fffdf9;
+}
+
+.interview-page > nav {
+	position: sticky;
+	top: 28px;
+	padding: 22px 14px;
+}
+
+.interview-page > nav > p,
+.interview-page > aside > div > p:first-child {
+	margin: 0 10px 15px;
+	color: #9a958b;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.interview-page > nav button {
+	width: 100%;
+	display: block;
+	border: 0;
+	border-left: 3px solid transparent;
+	padding: 12px 10px;
+	color: #687068;
+	background: transparent;
+	font-size: 13px;
+	text-align: left;
+}
+
+.interview-page > nav button:hover,
+.interview-page > nav button.active {
+	border-left-color: #c4663b;
+	color: #19352a;
+	background: #f5f0e8;
+}
+
+.interview-page > nav .download-button {
+	margin-top: 26px;
+	border: 1px solid #19352a;
+	color: #19352a;
+	font-weight: 700;
+	text-align: center;
+}
+
+.interview-page > nav .download-button:hover {
+	color: #fffdf9;
+	background: #19352a;
+}
+
+.interview-page > main {
+	min-width: 0;
+	display: block;
+	padding: 20px 0;
+}
+
+.interview-page > main::before {
+	content: 'YOUR PREPARATION PLAN';
+	display: block;
+	margin-bottom: 12px;
+	color: #c4663b;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.15em;
+}
+
+.interview-page > main section {
+	animation: reveal 260ms ease both;
+}
+
+.interview-page > main section > div:first-child {
+	display: flex;
+	align-items: end;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 18px;
+}
+
+.interview-page h2 {
+	color: #19352a;
+	font-family: 'Space Grotesk', sans-serif;
+	font-size: 26px;
+}
+
+.interview-page section > div:first-child span {
+	color: #c4663b;
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.roadmap-day ul {
+	margin: 0;
+	border-left: 3px solid #38745b;
+	padding: 12px 20px 12px 38px;
+	color: #5d675f;
+	background: #fffdf9;
+	line-height: 1.5;
+}
+
+.roadmap-day li {
+	margin: 7px 0;
+}
+
+.interview-page > aside {
+	position: sticky;
+	top: 28px;
+	padding: 22px;
+}
+
+.interview-page > aside > div:first-child span {
+	display: block;
+	color: #c4663b;
+	font-family: 'Space Grotesk', sans-serif;
+	font-size: 58px;
+	line-height: 1;
+}
+
+.interview-page > aside > div:first-child p:last-child {
+	margin-top: 10px;
+	color: #5d675f;
+	font-size: 13px;
+	line-height: 1.45;
+}
+
+.interview-page > aside > div:last-child {
+	margin-top: 34px;
+	border-top: 1px solid #eee7dc;
+	padding-top: 22px;
+}
+
+.interview-page > aside > div:last-child > p {
+	margin-bottom: 10px;
+	color: #9a958b;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.interview-page > aside > div:last-child > div {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 7px;
+}
+
+.interview-page > aside > div:last-child span {
+	border: 1px solid #cbd9ce;
+	padding: 7px 9px;
+	color: #246247;
+	background: #eef5ef;
+	font-size: 12px;
+	line-height: 1.3;
+}
+
+.interview-loading {
+	min-height: 100vh;
+	display: grid;
+	place-items: center;
+	color: #19352a;
+	background: #f5f0e8;
+	font-family: 'Space Grotesk', sans-serif;
+}
+
+@keyframes reveal {
+	from { opacity: 0; transform: translateY(5px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+/* Compact question rhythm keeps the list scannable while answers stay spacious. */
+.question-card {
+	margin-bottom: 8px;
+	border: 1px solid #ded6c9;
+	background: #fffdf9;
+	transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.question-card:hover {
+	border-color: #c9bba9;
+	box-shadow: 0 8px 20px rgba(53, 43, 31, 0.06);
+	transform: translateY(-1px);
+}
+
+.question-row {
+	min-height: 76px;
+	display: grid;
+	grid-template-columns: 48px minmax(0, 1fr) 24px;
+	align-items: center;
+	gap: 16px;
+	padding: 14px 18px;
+	cursor: pointer;
+}
+
+.question-number {
+	color: #c4663b;
+	font-family: 'Space Grotesk', sans-serif;
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.question-text {
+	margin: 0;
+	color: #19352a;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.45;
+}
+
+.question-chevron {
+	color: #c4663b;
+	font-size: 13px;
+	text-align: right;
+}
+
+.question-details {
+	display: grid;
+	grid-template-columns: minmax(150px, 0.65fr) minmax(0, 1.35fr);
+	gap: 20px;
+	border-top: 1px solid #eee7dc;
+	padding: 18px 20px 20px 82px;
+	animation: answerIn 220ms ease both;
+}
+
+.question-details > div {
+	min-width: 0;
+}
+
+.roadmap-day {
+	margin-bottom: 10px;
+	border-left: 3px solid #38745b;
+	padding: 16px 20px;
+	background: #fffdf9;
+	animation: answerIn 220ms ease both;
+}
+
+.roadmap-heading {
+	display: flex;
+	align-items: baseline;
+	gap: 14px;
+	margin-bottom: 9px;
+}
+
+.roadmap-heading h3 {
+	color: #19352a;
+	font-family: 'Space Grotesk', sans-serif;
+	font-size: 17px;
+}
+
+.roadmap-heading span {
+	color: #c4663b;
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.interview-loading {
+	position: relative;
+	overflow: hidden;
+}
+
+.interview-loading h1,
+.interview-loading > div {
+	position: relative;
+	z-index: 1;
+	color: #19352a;
+	font-family: 'Space Grotesk', sans-serif;
+	font-size: 18px;
+	font-weight: 600;
+	animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+.interview-loading > div {
+	text-align: center;
+}
+
+.interview-loading .loading-spinner {
+	width: 58px;
+	height: 58px;
+	display: inline-block;
+	border: 2px solid rgba(56, 116, 91, 0.16);
+	border-top-color: #c4663b;
+	border-radius: 50%;
+	animation: spin 900ms linear infinite;
+}
+
+.download-error {
+	position: fixed;
+	top: 24px;
+	right: 24px;
+	z-index: 9999;
+	max-width: min(360px, calc(100vw - 32px));
+	margin: 0;
+	border: 1px solid #e1b8ad;
+	border-left: 4px solid #b84935;
+	border-radius: 4px;
+	padding: 14px 18px;
+	color: #8e3024;
+	background: #fff8f5;
+	box-shadow: 0 14px 34px rgba(53, 43, 31, 0.16);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.45;
+	pointer-events: none;
+	animation: downloadToast 2.4s ease forwards;
+}
+
+.interview-loading h1 {
+	padding-top: 22px;
+}
+
+@keyframes answerIn {
+	from { opacity: 0; transform: translateY(-4px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+	to { transform: rotate(360deg); }
+}
+
+@keyframes loadingPulse {
+	0%, 100% { opacity: 0.48; }
+	50% { opacity: 1; }
+}
+
+@keyframes downloadToast {
+	0% { opacity: 0; transform: translateY(-12px); }
+	12%, 78% { opacity: 1; transform: translateY(0); }
+	100% { opacity: 0; transform: translateY(-8px); }
+}
+
+@media (max-width: 1000px) {
+	.interview-page {
+		grid-template-columns: 180px minmax(0, 1fr);
+	}
+
+	.interview-page > aside {
+		grid-column: 2;
+		position: static;
+	}
+}
+
+@media (max-width: 680px) {
+	.interview-page {
+		display: block;
+		padding: 18px 14px 40px;
+	}
+
+	.interview-page > nav,
+	.interview-page > aside {
+		position: static;
+		margin-bottom: 18px;
+	}
+
+	.interview-page > nav {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 5px;
+	}
+
+	.interview-page > nav > p {
+		grid-column: 1 / -1;
+	}
+
+	.interview-page > nav .download-button {
+		grid-column: 1 / -1;
+		margin-top: 8px;
+		text-align: center;
+	}
+
+	.question-row {
+		grid-template-columns: 34px minmax(0, 1fr) 20px;
+		gap: 10px;
+		padding: 13px 14px;
+	}
+
+	.question-details {
+		display: block;
+		padding: 16px 18px;
+	}
+
+	.question-details > div + div {
+		margin-top: 18px;
+	}
+
+	.download-error {
+		top: 16px;
+		right: 16px;
+		left: 16px;
+		max-width: none;
+	}
+}
