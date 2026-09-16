@@ -61,7 +61,7 @@ async function getAllInterviewReportsController(req, res) {
 
 async function generateResumePdfController(req, res) {
     const {interviewReportId} = req.params;
-    const interviewReport = await interviewReportModel.findbyId(interviewReportId);
+    const interviewReport = await interviewReportModel.findById(interviewReportId);
     if(!interviewReport){
         return res.status(404).json({
             message: "Interview report not found",
@@ -70,14 +70,22 @@ async function generateResumePdfController(req, res) {
 
     const {resume,selfDescription,jobDescription} = interviewReport;
 
-    const pdfBuffer = await generateResumePdf({resume,selfDescription,jobDescription});
 
-    res.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename=resume_${interviewReportId}.pdf`,
-    })
+    try{  
+        const pdfBuffer = await generateResumePdf({resume,selfDescription,jobDescription});
 
-    res.send(pdfBuffer);
+        res.set({
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `attachment; filename=resume_${interviewReportId}.pdf`,
+        })
+
+        res.send(pdfBuffer);
+    } catch (error) {
+        console.error("Error generating PDF:", error);
+        return res.status(503).json({
+            message: "Resume generation is temporarily unavailable. Please try again later.",
+    });
+    }
 }
 
 export {generateInterViewReportController
